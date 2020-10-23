@@ -1,5 +1,6 @@
 package com.example.sliderimages;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String VIDEO_TITAN= "https://www.youtube.com/watch?v=AgBUP8TJqV8&ab_channel=Kimmeh";
     private static final String VIDEO_NARUTO = "https://www.youtube.com/watch?v=o-hzTmeCqN0&ab_channel=meena%E2%99%A1";
     private static final String VIDEO_ONE_PIECE = "https://www.youtube.com/watch?v=BpHF8zCN6Mg&ab_channel=Nerd%2CUai%21";
+
+    //array URL
+    private ArrayList<String> arrayImgUrl;
 
     //URL default
     private String imageUrl = IMG_TITAN;
@@ -57,9 +62,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        arrayImgUrl = new ArrayList<String>();
+        arrayImgUrl.add(IMG_TITAN);
+        arrayImgUrl.add(IMG_NARUTO);
+        arrayImgUrl.add(IMG_ONE_PIECE);
+
         imageview = findViewById(R.id.image);
         Button download = findViewById(R.id.download);
         Button permission = findViewById(R.id.permission);
+        Button pass = findViewById(R.id.pass);
         save = findViewById(R.id.save);
         save.setEnabled(false);
 
@@ -93,13 +104,19 @@ public class MainActivity extends AppCompatActivity {
                 saveImage(imageUrl);
             }
         });
+
+        pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ShowImages.class);
+                intent.putStringArrayListExtra("arrayImages", arrayImgUrl);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void loadImage(String imgUrl){
-        Picasso.get().load(imgUrl).into(imageview);
-    }
+
     private void chrono(){
-
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -147,7 +164,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    private void loadImage(String imgUrl){
+        Picasso.get().load(imgUrl).into(imageview);
+    }
 
     private void saveImage(String image){
         Picasso.get().load(image).into(new Target() {

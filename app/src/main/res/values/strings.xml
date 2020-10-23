@@ -3,4 +3,6 @@
     <string name="download">Download</string>
     <string name="permission">Add permission</string>
     <string name="save">Save</string>
+    <string name="pass">Pass</string>
+    <string name="show">Show images</string>
 </resources>
